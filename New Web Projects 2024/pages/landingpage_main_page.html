@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Code Ups</title>
+    <link rel="stylesheet" href="styles\main_styles.css">
+</head>
+
+<body>
+<div class="top-bar">
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search...">
+        <button onclick="search()" class="search-button">Search</button>
+    </div>
+
+
+    <div class="buttons1">
+        <a id="aibutton" class="help-button2">AI Chatbot</a>
+        <a href="" class="help-button1">Settings</a>
+        <a href="index.html" class="help-button">Logout</a>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="mainbox" id="searchResults"></div>
+    <button class="close-button" onclick="closeMainbox()">Close</button>
+</div>
+
+<div id="container2" class="container2">
+    <div class="mainbox2">
+        <h1>Chatbot AI</h1>
+        <p>The Chatbot feature is currently under development please check back later</p>
+        <section class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></diV>   
+            <div class="dot"></div>
+          </section>
+    </div>
+    <button class="close-button" onclick="closePopup()">Close</button>
+</div>
+
+<div class="bot-bar">
+    <h1 id="uk-date-time"></h1><h1>Server - ZX34Q <i class='bx bxs-server'></i></h1>
+</div>
+
+<script>
+    var isMainboxOpen = false;
+    var isContainer2Open = false;
+
+    function search() {
+        var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        var searchResultsDiv = document.getElementById('searchResults');
+        searchResultsDiv.innerHTML = ''; // Clear previous search results
+
+        // Fetch data from a text file named "data.txt"
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'data/data.txt', true);
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                var fileContent = xhr.responseText;
+                var paragraphs = fileContent.split(/\n\s*\n/); // Split data by empty lines
+
+                var matchingParagraphs = [];
+                paragraphs.forEach(function(paragraph) {
+                    if (paragraph.toLowerCase().includes(searchTerm)) {
+                        matchingParagraphs.push(paragraph);
+                    }
+                });
+
+                if (matchingParagraphs.length > 0) {
+                    matchingParagraphs.forEach(function(paragraph) {
+                        var p = document.createElement('p');
+                        p.textContent = paragraph;
+                        searchResultsDiv.appendChild(p);
+                    });
+                } else {
+                    searchResultsDiv.textContent = 'No matching data found on that search try asking our AI';
+                }
+
+                // Show the mainbox after search
+                document.querySelector('.container').style.display = 'block';
+                isMainboxOpen = true;
+            } else {
+                searchResultsDiv.textContent = 'Failed to load data';
+            }
+        };
+
+        xhr.onerror = function() {
+            searchResultsDiv.textContent = 'Failed to load data, please try logging out and and back in again';
+        };
+
+        xhr.send();
+    }
+
+    function closeMainbox() {
+        // Hide the mainbox and close button
+        document.querySelector('.container').style.display = 'none';
+        isMainboxOpen = false;
+    }
+
+    // Function to open the popup
+    function openPopup() {
+        document.getElementById("container2").style.display = "block";
+        isContainer2Open = true;
+    }
+
+    // Function to close the popup
+    function closePopup() {
+        document.getElementById("container2").style.display = "none";
+        isContainer2Open = false;
+    }
+
+    // Event listener to open the popup when the button is clicked
+    document.getElementById("aibutton").addEventListener("click", function() {
+        if (isContainer2Open) {
+            closePopup();
+        } else {
+            openPopup();
+            if (isMainboxOpen) {
+                closeMainbox();
+            }
+        }
+    });
+
+</script>
+
+<script>
+    function getUKDateTime() {
+        // Get current date and time in UTC
+        var now = new Date();
+
+        // Set the timezone offset for UK (UTC +0)
+        var ukTimezoneOffset = 0;
+
+        // Adjust the time according to the timezone offset
+        var ukTime = new Date(now.getTime() + (ukTimezoneOffset * 60 * 60 * 1000));
+
+        // Format the date to display
+        var day = ukTime.getUTCDate().toString().padStart(2, '0');
+        var month = (ukTime.getUTCMonth() + 1).toString().padStart(2, '0');
+        var year = ukTime.getUTCFullYear();
+
+        // Format the time to display
+        var hours = ukTime.getUTCHours().toString().padStart(2, '0');
+        var minutes = ukTime.getUTCMinutes().toString().padStart(2, '0');
+        var seconds = ukTime.getUTCSeconds().toString().padStart(2, '0');
+
+        // Display the date and time
+        document.getElementById('uk-date-time').textContent = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+    }
+
+    // Call the function initially and update every second
+    getUKDateTime();
+    setInterval(getUKDateTime, 1000);
+</script>
+
+</body>
+</html>
