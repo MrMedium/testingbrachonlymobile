@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Redirect......</title>
+    <title>Redirecting... (Please Wait)</title>
     <link rel="stylesheet" href="styles/main_styles.css">
 
     <style>
@@ -19,6 +19,9 @@
 </head>
 <body>
     <div class="content">
+            <div class="error-message" id="errorMessage" style="display: none;">
+        Sorry, this page is not accessible on mobile devices.
+            </div>
         <h1>Welcome...</h1>
         <p>We are just loading some content right now.. We will redirect you shortly please hangtight! This could take a few minutes...</p>
         <section class="dots-container">
@@ -30,9 +33,7 @@
         </section>
     </div>
 
-    <div class="error-message" id="errorMessage" style="display: none;">
-        Sorry, this page is not accessible on mobile devices.
-    </div>
+    
 
     <script>
         // Check if the user is accessing the page from a mobile device
